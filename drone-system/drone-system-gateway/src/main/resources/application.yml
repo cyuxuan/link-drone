@@ -1,0 +1,93 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: drone-system-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+      config:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        file-extension: yaml
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600
+      routes:
+        - id: user
+          uri: lb://drone-system-user
+          predicates:
+            - Path=/api/user/**
+          filters:
+            - StripPrefix=2
+        - id: supply
+          uri: lb://drone-system-supply
+          predicates:
+            - Path=/api/supply/**
+          filters:
+            - StripPrefix=2
+        - id: demand
+          uri: lb://drone-system-demand
+          predicates:
+            - Path=/api/demand/**
+          filters:
+            - StripPrefix=2
+        - id: order
+          uri: lb://drone-system-order
+          predicates:
+            - Path=/api/order/**
+          filters:
+            - StripPrefix=2
+        - id: payment
+          uri: lb://drone-system-payment
+          predicates:
+            - Path=/api/payment/**
+          filters:
+            - StripPrefix=2
+        - id: message
+          uri: lb://drone-system-message
+          predicates:
+            - Path=/api/message/**
+          filters:
+            - StripPrefix=2
+        - id: file
+          uri: lb://drone-system-file
+          predicates:
+            - Path=/api/file/**
+          filters:
+            - StripPrefix=2
+        - id: search
+          uri: lb://drone-system-search
+          predicates:
+            - Path=/api/search/**
+          filters:
+            - StripPrefix=2
+        - id: admin
+          uri: lb://drone-system-admin
+          predicates:
+            - Path=/api/admin/**
+          filters:
+            - StripPrefix=2
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

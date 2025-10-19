@@ -1,0 +1,24 @@
+server:
+  port: 8010
+
+spring:
+  application:
+    name: drone-system-admin
+  datasource:
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/link_drone?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+      config:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        file-extension: yaml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
